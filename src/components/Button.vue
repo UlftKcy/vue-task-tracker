@@ -1,5 +1,5 @@
 <template>
-<button @click="onClick()">{{title}}</button>
+<button @click="toggleAddTask" :style="{'background-color':color}">{{title}}</button>
 </template>
 
 <script>
@@ -12,31 +12,26 @@ export default {
         },
         title:{
             type:String,
-            default:"Button",
+            default:"Button"
         }
     },
-    methods: {
-        onClick : function(){
-            console.log(11)
+    methods:{
+        toggleAddTask(){
+            this.$emit("toggle-add-task")
         }
-    },
+    }
 }
 </script>
 
 <style scoped>
 button{
     padding: 1rem 2rem;
-    background-color: rgb(154, 235, 185);
-    color: rgb(9, 73, 34);
+    color: #ffff;
     font-weight: bold;
     font-size: 0.9rem;
     border: 0;
     border-radius: 10px;
     cursor: pointer;
-}
-button:hover{
-    background-color: rgb(9, 73, 34);
-    color: #ffff;
 }
 </style>
 

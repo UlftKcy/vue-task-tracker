@@ -1,8 +1,11 @@
 <template>
     <div class="container">
-        <Header title="Task Tracker"/>
-        <AddTask/>
-        <Tasks @delete-task = "deleteTask" @toggle-reminder = "toggleTaskReminder" :tasks="tasks"/>
+        <Header title="Task Tracker" @toggle-add-task = "toggleAddTaskForm" :showAddTask="showAddTask"/>
+        <div v-show="showAddTask">
+          <AddTask @save-task = "saveTask"/>
+        </div>
+        <EmptyTask  v-if = "tasks.length === 0"/>
+        <Tasks v-else @delete-task = "deleteTask" @toggle-reminder = "toggleTaskReminder" :tasks="tasks"/>
     </div>
 </template>
 
@@ -10,6 +13,7 @@
 import Header from "./components/Header.vue";
 import Tasks from "./components/Tasks.vue";
 import AddTask from "./components/AddTask.vue";
+import EmptyTask from "./components/EmptyTask.vue";
 
 export default {
   name: 'App',
@@ -17,14 +21,16 @@ export default {
     Header,
     Tasks,
     AddTask,
+    EmptyTask,
   },
   data(){
     return{
-      tasks:[]
+      tasks:[],
+      showAddTask:false,
     }
   },
 
-  emits:["delete-task","toggle-reminder"],
+  emits:["delete-task","toggle-reminder","toggle-add-task","save-task"],
 
   methods:{
     deleteTask(id) {
@@ -35,6 +41,12 @@ export default {
       task.id === id ? {...task,reminder:!task.reminder}:task
       )
     },
+    toggleAddTaskForm(){
+      this.showAddTask = !this.showAddTask;
+    },
+    saveTask(task){
+      this.tasks = [...this.tasks,task];
+    }
   },
 
   created(){
@@ -63,11 +75,35 @@ export default {
 </script>
 <style>
 .container{
-  width: 25vw;
-  min-height: 80vh;
+  max-height: 100vh;
   border: 1px solid #ddd;
   margin: 2rem auto;
   padding: 1rem;
   background-color: rgb(240, 230, 230);
+}
+@media screen and (max-width: 600px) {
+  .container {
+     width: 85vw;
+  }
+}
+@media screen and (min-width: 600px) {
+  .container {
+     width: 75vw;
+  }
+}
+@media screen and (min-width: 768px) {
+  .container {
+     width: 60vw;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .container {
+     width: 40vw;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .container {
+    width: 25vw;
+  }
 }
 </style>
