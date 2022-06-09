@@ -1,4 +1,4 @@
-# cli-app
+# vue-task-tracker
 
 ## Project setup
 ```
